@@ -8,7 +8,7 @@
 module.exports = {
 	wechat : (req, res) => {
     let query = req.query;
-    let token = sails.config.wechat.token;
+    let token = sails.config.wechatToken;
     let result = sails.services.wechatserver.checkSignature(query, token);
     if(result){
       res.ok(req.query.echostr);
