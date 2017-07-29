@@ -76,6 +76,17 @@ module.exports.http = {
   ***************************************************************************/
 
     // bodyParser: require('skipper')({strict: true})
+    bodyParser: function() {
+      var xmlParser = require('express-xml-bodyparser')();
+      var skipper = require('skipper')();
+      return function(req, res, next) {
+        if (req.headers && (req.headers['content-type'] == 'text/xml' || 
+            req.headers['content-type'] == 'application/xml')) {
+          return xmlParser(req, res, next);
+        }
+        return skipper(req, res, next);
+      };
+    }
 
   },
 

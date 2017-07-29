@@ -20,6 +20,7 @@ module.exports = {
 
   wechatRecieve : (req, res, next) => {
     let data = req.rawBody;
+    if(!data) return res.badRequest();
     parseString(data, {trim: true, explicitArray: false}, (err, result) => {
       if(err) {
         sails.log.error(err);
