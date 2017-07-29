@@ -13,11 +13,11 @@ module.exports = {
   },
 
   replyMessage : (body, res) => {
-    let msgArr = body.content.split(',');
+    let msgArr = body.Content.split(',');
     switch(msgArr[0]){
       case 'pi' :
         //转发给树莓派项目
-        pubsub.emit('piMsg', body.content);
+        pubsub.emit('piMsg', body.Content);
       break;
     }
     res.ok();
