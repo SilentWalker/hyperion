@@ -36,8 +36,8 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'GET /wechat' : 'WechatController.wechat'
-
+  'GET /wechat' : 'WechatController.wechat',
+  'POST /wechat' : 'WechatController.wechatRecieve'
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
