@@ -25,7 +25,8 @@
     "redis": "^2.7.1",
     "sails": "~0.12.3",
     "sails-disk": "~0.10.9",
-    "wechat-api": "^1.34.0"
+    "wechat-api": "^1.34.0",
+    "xml2js": "^0.4.17"
   },
   "scripts": {
     "debug": "node debug app.js",

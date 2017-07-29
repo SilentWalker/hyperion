@@ -5,6 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 'use strict'
+const parseString = require('xml2js').parseString;
 module.exports = {
 	wechat : (req, res) => {
     let query = req.query;
@@ -15,6 +16,22 @@ module.exports = {
     }else{
       res.status(403).json({error: 'Invalid'});
     }
+  },
+
+  wechatRecieve : (req, res, next) => {
+    let data = req.rawBody;
+    parseString(data, {trim: true, explicitArray: false}, (err, result) => {
+      if(err) {
+        sails.log.error(err);
+        return res.serverError(err);
+      }
+      let body = result.xml;
+      switch(body.MsgType){
+        // case 'event': sails.services.wechatserver.replyEvent(body, res);break;
+        case 'text': sails.services.wechatserver.replyMessage(body, res);break;
+        default:return res.ok('success');
+      }
+    })
   }
 };
 

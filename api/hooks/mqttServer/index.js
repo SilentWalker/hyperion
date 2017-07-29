@@ -48,6 +48,18 @@ module.exports = function MqttServer(sails){
           }
         })
 
+        pubsub.on('piMsg', (msg) => {
+          let message = {
+            topic : 'pi',
+            payload: msg,
+            qos : 2,
+            retain : false
+          };
+          server.publish(message, function(){
+            sails.log.info(`topic : ${message.topic}, payload : ${message.payload} published`)
+          })
+        });
+
         function setup() {
           sails.log.debug(`Mosca server is up and running at port ${moscaSettings.port}`);
           server.authenticate = authenticate;
