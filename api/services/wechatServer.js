@@ -23,6 +23,17 @@ module.exports = {
     res.ok();
   },
 
+  replyVoiceMessage : (body, res) => {
+    sails.log.debug(body);
+    // switch(msgArr[0]){
+    //   case 'pi' :
+    //     //转发给树莓派项目
+    //     pubsub.emit('piMsg', body.;Content);
+    //   break;
+    // }
+    res.ok();
+  },
+
   replyEvent : (body, res) => {
     //TODO
     res.ok();

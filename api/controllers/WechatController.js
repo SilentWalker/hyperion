@@ -30,6 +30,7 @@ module.exports = {
       switch(body.MsgType){
         // case 'event': sails.services.wechatserver.replyEvent(body, res);break;
         case 'text': sails.services.wechatserver.replyMessage(body, res);break;
+        case 'voice': sails.services.wechatserver.replyVoiceMessage(body, res);break;
         default:return res.ok('success');
       }
     })
