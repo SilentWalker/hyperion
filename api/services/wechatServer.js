@@ -1,6 +1,7 @@
 'use strict'
 const crypto = require('crypto')
 const pubsub = sails.config.innerPubsub;
+const nodejieba = require('nodejieba');
 module.exports = {
   checkSignature : (query, token) => {
     let signature = query.signature;
@@ -24,13 +25,14 @@ module.exports = {
   },
 
   replyVoiceMessage : (body, res) => {
-    sails.log.debug(body);
+    sails.log.debug(body.Recognition);
     // switch(msgArr[0]){
     //   case 'pi' :
     //     //转发给树莓派项目
     //     pubsub.emit('piMsg', body.;Content);
     //   break;
     // }
+    sails.log.debug(nodejieba.cut(body.Recognition))
     res.ok();
   },
 
