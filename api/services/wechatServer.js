@@ -57,7 +57,8 @@ module.exports = {
               if(err){
                 sails.log.error(err);
               }else{
-                sails.log.info(`歌名 : ${rs.fileName}\n时长 : ${parseInt(rs.timeLength / 60)}分${rs.timeLength % 60}秒\nURL  : ${rs.url}`)
+                sails.log.info(`歌名 : ${rs.fileName}\n时长 : ${parseInt(rs.timeLength / 60)}分${rs.timeLength % 60}秒\nURL  : ${rs.url}`);
+                pubsub.emit('piMsg', 'music|' +　rs.url);
                 api.sendText(userOpenId, `歌名 : ${rs.fileName}\n时长 : ${parseInt(rs.timeLength / 60)}分${rs.timeLength % 60}秒\nURL  : ${rs.url}`, (err, rs) => {
                   if(err){
                     sails.log.error(err);
@@ -69,6 +70,11 @@ module.exports = {
             })
           }
         })
+      break;
+      case '停止' :
+        if(words[1] === '播放'){
+          pubsub.emit('piMsg', 'stopmusic');
+        }
     }
     res.ok();
   },
