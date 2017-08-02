@@ -23,10 +23,10 @@ module.exports = {
         pubsub.emit('piMsg', body.Content);
       break;
       default :
-        sails.services.tuling.send({
-          userid: body.FromUserName,
-          info: body.Content
-        }, (err, result) => {
+        sails.services.tuling.send(
+          body.FromUserName,
+          body.Content
+        , (err, result) => {
           console.log(result);
           api.sendText(body.FromUserName, result.text + (result.url ? '\n' + result.url : ''), (err, rs) => {
             if(err){
