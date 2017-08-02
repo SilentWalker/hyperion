@@ -3,8 +3,6 @@ const crypto = require('crypto')
 const pubsub = sails.config.innerPubsub;
 const nodejieba = require('nodejieba');
 const WeChatApi = require('wechat-api');
-const TULING = require('tuling');
-const tuling = new TULING({key: sails.config.tulingKey});
 const api = new WeChatApi(sails.config.appId, sails.config.appSecret);
 module.exports = {
   checkSignature : (query, token) => {
@@ -25,10 +23,10 @@ module.exports = {
         pubsub.emit('piMsg', body.Content);
       break;
       default :
-        tuling.send({
+        sails.services.tuling.send({
           userid: body.FromUserName,
           info: body.Content
-        }).then(function(result) {
+        }, (err, result) => {
           console.log(result);
           api.sendText(body.FromUserName, result.text + (result.url ? '\n' + result.url : ''), (err, rs) => {
             if(err){
