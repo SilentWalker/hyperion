@@ -53,7 +53,7 @@ module.exports = {
             sails.log.error(err);
           }else{
             let hash = rs[0]['320hash'] ? rs[0]['320hash'] : rs[0]['hash'];
-            sails,services.kugou.songInfo(hash, (err, rs) => {
+            sails.services.kugou.songInfo(hash, (err, rs) => {
               if(err){
                 sails.log.error(err);
               }else{
