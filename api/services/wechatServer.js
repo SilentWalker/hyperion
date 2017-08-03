@@ -28,7 +28,13 @@ module.exports = {
           body.Content
         , (err, result) => {
           console.log(result);
-          pubsub.emit('piMsg', 'voice|' + result.text);
+          sails.services.tts.speak(result.text, (err, url) => {
+            if(err){
+              sails.log.error(err)
+            }else{
+              pubsub.emit('piMsg', 'music|' + url);
+            }
+          })
           //订阅号无法在后台发送客服消息
           // api.sendText(body.FromUserName, result.text + (result.url ? '\n' + result.url : ''), (err, rs) => {
           //   if(err){
@@ -54,6 +60,7 @@ module.exports = {
           if(err){
             sails.log.error(err);
           }else{
+            if(rs.length === 0) return;
             let hash = rs[0]['320hash'] ? rs[0]['320hash'] : rs[0]['hash'];
             sails.services.kugou.songInfo(hash, (err, rs) => {
               if(err){
@@ -85,7 +92,13 @@ module.exports = {
           body.Recognition
         , (err, result) => {
           console.log(result);
-          pubsub.emit('piMsg', 'voice|' + result.text);
+          sails.services.tts.speak(result.text, (err, url) => {
+            if(err){
+              sails.log.error(err)
+            }else{
+              pubsub.emit('piMsg', 'music|' + url);
+            }
+          })
         })
     }
     res.ok();
