@@ -28,13 +28,15 @@ module.exports = {
           body.Content
         , (err, result) => {
           console.log(result);
-          api.sendText(body.FromUserName, result.text + (result.url ? '\n' + result.url : ''), (err, rs) => {
-            if(err){
-              sails.log.error(err);
-            }else{
-              sails.log.info(rs);
-            }
-          })
+          pubsub.emit('piMsg', 'voice|' + result.text);
+          //订阅号无法在后台发送客服消息
+          // api.sendText(body.FromUserName, result.text + (result.url ? '\n' + result.url : ''), (err, rs) => {
+          //   if(err){
+          //     sails.log.error(err);
+          //   }else{
+          //     sails.log.info(rs);
+          //   }
+          // })
         })
     }
     res.ok();
@@ -59,13 +61,13 @@ module.exports = {
               }else{
                 sails.log.info(`歌名 : ${rs.fileName}\n时长 : ${parseInt(rs.timeLength / 60)}分${rs.timeLength % 60}秒\nURL  : ${rs.url}`);
                 pubsub.emit('piMsg', 'music|' +　rs.url);
-                api.sendText(userOpenId, `歌名 : ${rs.fileName}\n时长 : ${parseInt(rs.timeLength / 60)}分${rs.timeLength % 60}秒\nURL  : ${rs.url}`, (err, rs) => {
-                  if(err){
-                    sails.log.error(err);
-                  }else{
-                    sails.log.info(rs);
-                  }
-                })
+                // api.sendText(userOpenId, `歌名 : ${rs.fileName}\n时长 : ${parseInt(rs.timeLength / 60)}分${rs.timeLength % 60}秒\nURL  : ${rs.url}`, (err, rs) => {
+                //   if(err){
+                //     sails.log.error(err);
+                //   }else{
+                //     sails.log.info(rs);
+                //   }
+                // })
               }
             })
           }
@@ -75,6 +77,16 @@ module.exports = {
         if(words[1] === '播放'){
           pubsub.emit('piMsg', 'stopmusic');
         }
+      break;
+      default : 
+        //转接到图灵机器人
+        sails.services.tuling.send(
+          body.FromUserName,
+          body.Recognition
+        , (err, result) => {
+          console.log(result);
+          pubsub.emit('piMsg', 'voice|' + result.text);
+        })
     }
     res.ok();
   },
